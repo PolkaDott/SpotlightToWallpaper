@@ -4,4 +4,5 @@ To do this you should:
 1. Place the folder with .exe file into any folder.
 2. Press Win+R and execute shell:startup
 3. Create shortcut of .exe file and put it to Start Up folder that you opened before
+
 If your OS Windows refresh picture in the Lock Screen, the same picture will appear on you Desktop every time you boot the PC
