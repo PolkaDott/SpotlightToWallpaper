@@ -39,18 +39,62 @@ if not exist C:\Users\%USERNAME%"\AppData\Local\Packages\Microsoft.Windows.Conte
     exit
 )
 set latest=0
-set name=
+set name1=
+set name2=
 for /R C:\Users\%USERNAME%"\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets\" %%i in (*) do (
     set file=%%i
     set date=%%~ti
-    set mdate=!date:~6,4!!date:~3,2!!date:~0,2!!date:~11,2!!date:~14,2!
-    if /I !mdate! GTR !latest! (
+    set mdate=!date:~8,2!!date:~3,2!!date:~0,2!!date:~11,2!!date:~14,1!
+    if /I !mdate! GEQ !latest! (
+        if /I !mdate! EQU !latest! (
+            set name2=!name1!
+        )
         set latest=!mdate!
-        set name=%%i
+        set name1=%%i
     )
 )
-copy !name! back.jpg
-reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "%cd%\back.jpg" /f
+if exist back1920x1080.jpg (
+    for %%i in (back1920x1080.jpg) do (
+        set date=%%~ti
+        set mdate=!date:~8,2!!date:~3,2!!date:~0,2!!date:~11,2!!date:~14,1!
+        if /I !mdate! EQU !latest! (
+            echo %date% %time% No updates >> logs.txt
+            exit
+        )
+    )
+)
+del back1920x1080.jpg
+del back1080x1920.jpg
+copy !name1! back1.jpg
+copy !name2! back2.jpg
+file back1.jpg > temp
+set /P size1= < temp
+set size1=!size1:~123,9!
+file back2.jpg > temp
+set /P size2= < temp
+set size2=!size2:~123,9!
+del temp
+if /I !size1! EQU 1920x1080 (
+    ren back1.jpg back1920x1080.jpg
+)
+if /I !size1! EQU 1080x1920 (
+    ren back1.jpg back1080x1920.jpg
+)
+if /I !size2! EQU 1920x1080 (
+    ren back2.jpg back1920x1080.jpg
+)
+if /I !size2! EQU 1080x1920 (
+    ren back2.jpg back1080x1920.jpg
+)
+if not exist back1920x1080.jpg (
+    echo %date% %time% Incorrect Spotlight picture - no 1920x1080 resolution >> logs.txt
+    exit
+)
+if not exist back1080x1920.jpg (
+    echo %date% %time% Incorrect Spotlight picture - no 1080x1920 resolution >> logs.txt
+    exit
+)
+reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "%cd%\back1920x1080.jpg" /f
 timeout /t 1
 start "" /b RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters ,1 ,True
 timeout /t 1
