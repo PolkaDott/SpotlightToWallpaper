@@ -92,16 +92,6 @@ if not exist back1080x1920.jpg (
     echo %date% %time% Incorrect Spotlight picture - no 1080x1920 resolution >> logs.txt
     exit
 )
-reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "%cd%\back1920x1080.jpg" /f
-timeout /t 1
-start "" /b RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters ,1 ,True
-timeout /t 1
-start "" /b RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters ,1 ,True
-timeout /t 1
-start "" /b RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters ,1 ,True
-timeout /t 1
-start "" /b RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters ,1 ,True
-timeout /t 1
-start "" /b RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters ,1 ,True
+upwp.exe "%cd%\back1920x1080.jpg"
 echo %date% %time% Success! >> logs.txt
 endlocal
