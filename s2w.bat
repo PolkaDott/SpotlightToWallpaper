@@ -67,12 +67,10 @@ del back1920x1080.jpg
 del back1080x1920.jpg
 copy !name1! back1.jpg
 copy !name2! back2.jpg
-file back1.jpg > temp
+jpgsize.exe back1.jpg > temp
 set /P size1= < temp
-set size1=!size1:~123,9!
-file back2.jpg > temp
+jpgsize.exe back2.jpg > temp
 set /P size2= < temp
-set size2=!size2:~123,9!
 del temp
 if /I !size1! EQU 1920x1080 (
     ren back1.jpg back1920x1080.jpg
