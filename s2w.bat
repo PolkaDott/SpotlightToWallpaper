@@ -38,6 +38,7 @@ if not exist C:\Users\%USERNAME%"\AppData\Local\Packages\Microsoft.Windows.Conte
     echo %date% %time% Fail. There is not the path >> logs.txt
     exit
 )
+:begin
 set latest=0
 set name1=
 set name2=
@@ -59,7 +60,11 @@ if exist back1920x1080.jpg (
         set mdate=!date:~8,2!!date:~3,2!!date:~0,2!!date:~11,2!!date:~14,1!
         if /I !mdate! EQU !latest! (
             echo %date% %time% No updates >> logs.txt
-            exit
+            if defined delay exit
+            set /P delay= < delay.txt
+            timeout /T !delay!
+            goto begin
+            rem exit
         )
     )
 )
